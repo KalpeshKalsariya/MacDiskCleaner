@@ -134,7 +134,7 @@ private struct CleanupRow: View {
             }
             Spacer()
             Text(kind.shortcutLabel)
-                .font(.caption2)
+                .font(.caption)
                 .foregroundStyle(.secondary)
             if state.isCleaning {
                 ProgressView()
