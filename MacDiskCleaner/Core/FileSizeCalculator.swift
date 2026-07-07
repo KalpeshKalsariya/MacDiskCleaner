@@ -31,7 +31,7 @@ enum FileSizeCalculator {
         guard let enumerator = fileManager.enumerator(
             at: url,
             includingPropertiesForKeys: Array(keys),
-            options: [],
+            options: [.skipsHiddenFiles],
             errorHandler: { _, _ in
                 accessRestricted = true
                 return true
