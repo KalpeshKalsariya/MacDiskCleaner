@@ -57,6 +57,7 @@ struct MenuBarView: View {
                 Image(systemName: "arrow.clockwise")
             }
             .buttonStyle(.plain)
+            .focusEffectDisabled()
         }
         .padding(12)
     }
