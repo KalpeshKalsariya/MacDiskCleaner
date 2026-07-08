@@ -60,6 +60,20 @@ final class MenuViewModel: ObservableObject {
         taskStates.contains { $0.isCleanable }
     }
 
+    var totalCleanableBytes: Int64 {
+        taskStates.reduce(0) { $0 + $1.sizeBytes }
+    }
+
+    var isCleaningAll: Bool {
+        taskStates.contains { $0.isCleaning }
+    }
+
+    var overallCleanProgress: Double {
+        let cleaning = taskStates.filter { $0.isCleaning }
+        guard !cleaning.isEmpty else { return 0 }
+        return cleaning.reduce(0) { $0 + $1.cleanProgress } / Double(cleaning.count)
+    }
+
     func scanAll() {
         for kind in CleanupTaskKind.allCases {
             scan(kind)
@@ -116,11 +130,16 @@ final class MenuViewModel: ObservableObject {
     private func clean(_ kind: CleanupTaskKind) {
         setState(for: kind) {
             $0.isCleaning = true
+            $0.cleanProgress = 0
             $0.lastError = nil
         }
         Task {
             do {
-                try await CleanupManager.clean(kind)
+                try await CleanupManager.clean(kind) { [weak self] fraction in
+                    Task { @MainActor in
+                        self?.setState(for: kind) { $0.cleanProgress = fraction }
+                    }
+                }
             } catch {
                 lastErrorMessage = error.localizedDescription
                 setState(for: kind) { $0.lastError = error.localizedDescription }

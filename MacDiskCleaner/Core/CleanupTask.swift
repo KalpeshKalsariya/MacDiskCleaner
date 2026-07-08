@@ -60,6 +60,7 @@ struct CleanupTaskState: Identifiable {
     var sizeBytes: Int64 = 0
     var isCalculating: Bool = false
     var isCleaning: Bool = false
+    var cleanProgress: Double = 0
     var lastError: String?
     var isAccessRestricted: Bool = false
 

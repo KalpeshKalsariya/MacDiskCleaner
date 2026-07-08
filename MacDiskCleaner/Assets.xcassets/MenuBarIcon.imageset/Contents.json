@@ -2,7 +2,13 @@
   "images" : [
     {
       "filename" : "MenuBarIcon.png",
-      "idiom" : "universal"
+      "idiom" : "mac",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "MenuBarIcon@2x.png",
+      "idiom" : "mac",
+      "scale" : "2x"
     }
   ],
   "info" : {

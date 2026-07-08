@@ -15,9 +15,13 @@ struct MenuBarView: View {
 
             ScrollView {
                 VStack(spacing: 4) {
-                    ForEach(CleanupTaskKind.allCases) { kind in
+                    let kinds = CleanupTaskKind.allCases
+                    ForEach(Array(kinds.enumerated()), id: \.element.id) { index, kind in
                         CleanupRow(kind: kind, state: viewModel.state(for: kind), viewModel: viewModel)
+                        Divider()
+                            .padding(.horizontal, 12)
                     }
+                    CleanAllRow(viewModel: viewModel)
                 }
                 .padding(.vertical, 6)
             }
@@ -80,19 +84,20 @@ struct MenuBarView: View {
 
     private var footer: some View {
         HStack {
-            Button("Clean All") {
-                viewModel.requestCleanAll()
+            Button {
+                AboutWindowController.shared.show()
+            } label: {
+                Label("About MDC", systemImage: "info.circle")
+                    .font(.subheadline.weight(.medium))
             }
-            .keyboardShortcut("e", modifiers: [.command, .shift])
-            .disabled(!viewModel.hasCleanableContent)
-            Text("⇧⌘E")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            .buttonStyle(.plain)
+            .foregroundStyle(.tint)
+            .focusEffectDisabled()
 
             Spacer()
 
             Text("⌘Q")
-                .font(.caption)
+                .font(.subheadline)
                 .foregroundStyle(.secondary)
             Button("Quit") {
                 NSApp.terminate(nil)
@@ -100,6 +105,39 @@ struct MenuBarView: View {
             .keyboardShortcut("q", modifiers: [.command])
         }
         .padding(12)
+    }
+}
+
+private struct CleanAllRow: View {
+    @ObservedObject var viewModel: MenuViewModel
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Clean All")
+                    .font(.body)
+                if viewModel.isCleaningAll {
+                    ProgressView(value: viewModel.overallCleanProgress)
+                        .progressViewStyle(.linear)
+                        .frame(maxWidth: 140)
+                } else {
+                    Text(ByteCountFormatter.string(fromByteCount: viewModel.totalCleanableBytes, countStyle: .file))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            Spacer()
+            Text("⇧⌘E")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+            Button("Clean") {
+                viewModel.requestCleanAll()
+            }
+            .keyboardShortcut("e", modifiers: [.command, .shift])
+            .disabled(!viewModel.hasCleanableContent || viewModel.isCleaningAll)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 4)
     }
 }
 
@@ -113,7 +151,11 @@ private struct CleanupRow: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(kind.title)
                     .font(.body)
-                if state.isCalculating {
+                if state.isCleaning {
+                    ProgressView(value: state.cleanProgress)
+                        .progressViewStyle(.linear)
+                        .frame(maxWidth: 140)
+                } else if state.isCalculating {
                     Text("Calculating…")
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -135,18 +177,13 @@ private struct CleanupRow: View {
             }
             Spacer()
             Text(kind.shortcutLabel)
-                .font(.caption)
+                .font(.subheadline)
                 .foregroundStyle(.secondary)
-            if state.isCleaning {
-                ProgressView()
-                    .controlSize(.small)
-            } else {
-                Button("Clean") {
-                    viewModel.requestClean(kind)
-                }
-                .keyboardShortcut(KeyEquivalent(kind.shortcutKey), modifiers: [.command, .shift])
-                .disabled(!state.isCleanable)
+            Button("Clean") {
+                viewModel.requestClean(kind)
             }
+            .keyboardShortcut(KeyEquivalent(kind.shortcutKey), modifiers: [.command, .shift])
+            .disabled(!state.isCleanable || state.isCleaning)
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 4)

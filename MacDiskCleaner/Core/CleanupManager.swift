@@ -18,43 +18,57 @@ enum CleanupManager {
         }.value
     }
 
-    static func clean(_ kind: CleanupTaskKind) async throws {
+    static func clean(_ kind: CleanupTaskKind, progress: @escaping (Double) -> Void = { _ in }) async throws {
         try await Task.detached(priority: .utility) {
             switch kind {
             case .simulators:
                 try SimulatorManager.deleteUnavailableSimulators()
+                progress(1)
             case .systemCaches:
-                try cleanDirectory(at: PathProvider.systemCaches, excluding: PathProvider.systemCachesExcludeList)
+                try removeContents(
+                    of: [PathProvider.systemCaches],
+                    excluding: PathProvider.systemCachesExcludeList,
+                    progress: progress
+                )
             default:
-                for path in kind.paths {
-                    try removeContents(of: path)
-                }
+                try removeContents(of: kind.paths, progress: progress)
             }
         }.value
     }
 
-    private static func removeContents(of directory: URL, excluding excludedNames: Set<String> = []) throws {
+    // Collects every item across all given directories up front so progress reflects the
+    // true total instead of restarting at 0% for each directory in a multi-path task.
+    private static func removeContents(
+        of directories: [URL],
+        excluding excludedNames: Set<String> = [],
+        progress: @escaping (Double) -> Void
+    ) throws {
         let fileManager = FileManager.default
-        guard fileManager.fileExists(atPath: directory.path) else { return }
+        var items: [URL] = []
+        for directory in directories {
+            guard fileManager.fileExists(atPath: directory.path) else { continue }
+            // Not try? — a permission error here (e.g. ~/.Trash without Full Disk Access) must
+            // surface to the user instead of silently looking like "nothing to clean."
+            let contents = try fileManager.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)
+            items += contents.filter { !excludedNames.contains($0.lastPathComponent) }
+        }
 
-        // Not try? — a permission error here (e.g. ~/.Trash without Full Disk Access) must
-        // surface to the user instead of silently looking like "nothing to clean."
-        let contents = try fileManager.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)
+        guard !items.isEmpty else {
+            progress(1)
+            return
+        }
 
         var failures: [(url: URL, error: Error)] = []
-        for item in contents where !excludedNames.contains(item.lastPathComponent) {
+        for (index, item) in items.enumerated() {
             do {
                 try fileManager.removeItem(at: item)
             } catch {
                 failures.append((item, error))
             }
+            progress(Double(index + 1) / Double(items.count))
         }
         if !failures.isEmpty {
             throw CleanupError(failures: failures)
         }
-    }
-
-    private static func cleanDirectory(at directory: URL, excluding excludedNames: Set<String>) throws {
-        try removeContents(of: directory, excluding: excludedNames)
     }
 }
