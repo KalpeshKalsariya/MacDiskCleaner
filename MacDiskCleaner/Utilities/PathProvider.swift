@@ -53,6 +53,14 @@ enum PathProvider {
         home.appendingPathComponent(".Trash")
     }
 
+    /// Files trashed from an iCloud Drive-synced location (e.g. Desktop/Documents with
+    /// "Desktop & Documents Folders" enabled) land here instead of ~/.Trash. Finder's
+    /// unified Trash view quietly merges both locations into one list, so we need to
+    /// check both too, or items visibly "in the Trash" would never be counted.
+    static var iCloudTrash: URL {
+        library.appendingPathComponent("Mobile Documents/.Trash")
+    }
+
     /// Folder names under ~/Library/Caches that must survive a "Clear Caches" pass —
     /// removing our own cache or Xcode's mid-build would be self-defeating.
     static let systemCachesExcludeList: Set<String> = [
@@ -71,7 +79,7 @@ enum PathProvider {
         case .simulators: return [simulatorDevices]
         case .systemCaches: return [systemCaches]
         case .cocoapodsCache: return [cocoapodsCaches, cocoapodsRepos]
-        case .trash: return [trash]
+        case .trash: return [trash, iCloudTrash]
         }
     }
 }

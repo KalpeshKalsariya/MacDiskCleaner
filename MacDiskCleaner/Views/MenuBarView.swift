@@ -7,10 +7,12 @@ struct MenuBarView: View {
         VStack(alignment: .leading, spacing: 0) {
             header
             Divider()
+                .background(Color(nsColor: .separatorColor))
 
             if !viewModel.hasFullDiskAccess {
                 fullDiskAccessBanner
                 Divider()
+                    .background(Color(nsColor: .separatorColor))
             }
 
             ScrollView {
@@ -19,6 +21,7 @@ struct MenuBarView: View {
                     ForEach(Array(kinds.enumerated()), id: \.element.id) { index, kind in
                         CleanupRow(kind: kind, state: viewModel.state(for: kind), viewModel: viewModel)
                         Divider()
+                            .background(Color(nsColor: .separatorColor))
                             .padding(.horizontal, 12)
                     }
                     CleanAllRow(viewModel: viewModel)
@@ -28,6 +31,7 @@ struct MenuBarView: View {
             .frame(maxHeight: 360)
 
             Divider()
+                .background(Color(nsColor: .separatorColor))
             footer
         }
         .frame(width: 320)
@@ -46,7 +50,6 @@ struct MenuBarView: View {
         } message: { target in
             Text(target.alertMessage)
         }
-        .onAppear { viewModel.scanAll() }
     }
 
     private var header: some View {
@@ -54,6 +57,7 @@ struct MenuBarView: View {
             Image(systemName: "internaldrive")
             Text("\(viewModel.availableCapacityText) available")
                 .font(.headline)
+                .foregroundStyle(.primary)
             Spacer()
             Button {
                 viewModel.scanAll()
@@ -70,7 +74,7 @@ struct MenuBarView: View {
         VStack(alignment: .leading, spacing: 6) {
             Label("Full Disk Access needed", systemImage: "exclamationmark.triangle.fill")
                 .font(.subheadline.bold())
-                .foregroundStyle(.orange)
+                .foregroundStyle(.primary)
             Text("Grant access in System Settings to scan and clean every location reliably.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -78,21 +82,17 @@ struct MenuBarView: View {
                 PermissionsHelper.openFullDiskAccessSettings()
             }
             .font(.caption)
+            .foregroundStyle(.primary)
         }
         .padding(12)
     }
 
     private var footer: some View {
         HStack {
-            Button {
+            Button("About MDC") {
                 AboutWindowController.shared.show()
-            } label: {
-                Label("About MDC", systemImage: "info.circle")
-                    .font(.subheadline.weight(.medium))
             }
-            .buttonStyle(.plain)
-            .foregroundStyle(.tint)
-            .focusEffectDisabled()
+            .foregroundStyle(.primary)
 
             Spacer()
 
@@ -103,6 +103,7 @@ struct MenuBarView: View {
                 NSApp.terminate(nil)
             }
             .keyboardShortcut("q", modifiers: [.command])
+            .foregroundStyle(.primary)
         }
         .padding(12)
     }
@@ -116,6 +117,7 @@ private struct CleanAllRow: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text("Clean All")
                     .font(.body)
+                    .foregroundStyle(.primary)
                 if viewModel.isCleaningAll {
                     ProgressView(value: viewModel.overallCleanProgress)
                         .progressViewStyle(.linear)
@@ -151,6 +153,7 @@ private struct CleanupRow: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(kind.title)
                     .font(.body)
+                    .foregroundStyle(.primary)
                 if state.isCleaning {
                     ProgressView(value: state.cleanProgress)
                         .progressViewStyle(.linear)

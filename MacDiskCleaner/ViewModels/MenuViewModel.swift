@@ -45,10 +45,17 @@ final class MenuViewModel: ObservableObject {
     @Published var lastErrorMessage: String?
 
     private var refreshTimer: Timer?
+    private var rescanTimer: Timer?
+    // Auto-refresh, manual refresh, and the post-clean rescan can all target the same kind
+    // in overlapping windows; without this, whichever scan happens to finish last wins,
+    // even if it was the older/slower one — silently reverting a fresh size to a stale one.
+    private var scanGenerations: [CleanupTaskKind: Int] = [:]
+    private var lastScanDate = Date()
 
     init() {
         taskStates = CleanupTaskKind.allCases.map { CleanupTaskState(kind: $0) }
         refreshAvailableCapacity()
+        scanAll()
         startAutoRefresh()
     }
 
@@ -75,15 +82,27 @@ final class MenuViewModel: ObservableObject {
     }
 
     func scanAll() {
+        lastScanDate = Date()
         for kind in CleanupTaskKind.allCases {
             scan(kind)
         }
     }
 
+    /// Called when the popover opens. Skips rescanning if the last scan (from launch,
+    /// the 5-minute timer, or a previous open) is still recent, so opening the popover
+    /// stays instant most of the time — only catching up when data is actually old.
+    func scanIfStale(olderThan threshold: TimeInterval = 60) {
+        guard Date().timeIntervalSince(lastScanDate) > threshold else { return }
+        scanAll()
+    }
+
     func scan(_ kind: CleanupTaskKind) {
+        let generation = (scanGenerations[kind] ?? 0) + 1
+        scanGenerations[kind] = generation
         setState(for: kind) { $0.isCalculating = true }
         Task {
             let result = await CleanupManager.calculateSize(for: kind)
+            guard scanGenerations[kind] == generation else { return }
             setState(for: kind) {
                 $0.sizeBytes = result.bytes
                 $0.isAccessRestricted = result.isAccessRestricted
@@ -118,7 +137,14 @@ final class MenuViewModel: ObservableObject {
     }
 
     func refreshAvailableCapacity() {
+        let wasFullDiskAccess = hasFullDiskAccess
         hasFullDiskAccess = PermissionsHelper.hasFullDiskAccess
+        if hasFullDiskAccess && !wasFullDiskAccess {
+            // The user just granted access (e.g. via the banner's "Open System Settings"
+            // button) — rows scanned before that point are stuck showing stale/blocked
+            // results until something rescans them, so do it the moment access appears.
+            scanAll()
+        }
         guard let values = try? PathProvider.home.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]),
               let capacity = values.volumeAvailableCapacityForImportantUsage else {
             availableCapacityText = "—"
@@ -154,6 +180,13 @@ final class MenuViewModel: ObservableObject {
         refreshTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in
             Task { @MainActor in
                 self?.refreshAvailableCapacity()
+            }
+        }
+        // Keeps sizes reasonably current without redoing a full disk scan every time the
+        // popover opens — the manual refresh button in the header still covers "I want it now."
+        rescanTimer = Timer.scheduledTimer(withTimeInterval: 300, repeats: true) { [weak self] _ in
+            Task { @MainActor in
+                self?.scanAll()
             }
         }
     }

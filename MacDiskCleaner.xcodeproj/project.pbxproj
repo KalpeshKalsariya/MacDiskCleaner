@@ -80,6 +80,8 @@
 				TargetAttributes = {
 					047B9AC12FFD622B000E2807 = {
 						CreatedOnToolsVersion = 26.6;
+						DevelopmentTeam = QRX998G8L7;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -249,6 +251,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QRX998G8L7;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -279,6 +282,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QRX998G8L7;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

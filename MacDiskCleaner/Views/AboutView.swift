@@ -8,13 +8,18 @@ struct AboutView: View {
         return "Version \(version)"
     }
 
+    // NSApp.applicationIconImage is sourced from the Dock tile, which this app doesn't
+    // have (it's LSUIElement, menu-bar-only) — so it comes back nil there. Asking
+    // Launch Services for the bundle's icon directly works regardless of Dock presence.
+    private var appIcon: NSImage {
+        NSWorkspace.shared.icon(forFile: Bundle.main.bundlePath)
+    }
+
     var body: some View {
         VStack(spacing: 16) {
-            if let icon = NSApp.applicationIconImage {
-                Image(nsImage: icon)
-                    .resizable()
-                    .frame(width: 96, height: 96)
-            }
+            Image(nsImage: appIcon)
+                .resizable()
+                .frame(width: 96, height: 96)
 
             VStack(spacing: 4) {
                 Text("MacDiskCleaner")

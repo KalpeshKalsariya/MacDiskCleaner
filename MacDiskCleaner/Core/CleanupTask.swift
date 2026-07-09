@@ -25,7 +25,7 @@ enum CleanupTaskKind: String, CaseIterable, Identifiable {
         case .simulators: return "Old Simulators"
         case .systemCaches: return "System Caches"
         case .cocoapodsCache: return "CocoaPods Cache"
-        case .trash: return "Trash"
+        case .trash: return "Empty Trash"
         }
     }
 

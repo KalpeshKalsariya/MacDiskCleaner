@@ -14,7 +14,17 @@ struct CleanupError: LocalizedError {
 enum CleanupManager {
     static func calculateSize(for kind: CleanupTaskKind) async -> FileSizeResult {
         await Task.detached(priority: .utility) {
-            kind.paths.reduce(FileSizeResult.zero) { $0 + FileSizeCalculator.size(of: $1) }
+            switch kind {
+            case .systemCaches:
+                // Excludes the same names `clean(.systemCaches)` never removes, so the size
+                // shown here matches what a cleanup pass will actually free.
+                return FileSizeCalculator.size(
+                    of: PathProvider.systemCaches,
+                    excludingTopLevelNames: PathProvider.systemCachesExcludeList
+                )
+            default:
+                return kind.paths.reduce(FileSizeResult.zero) { $0 + FileSizeCalculator.size(of: $1) }
+            }
         }.value
     }
 
