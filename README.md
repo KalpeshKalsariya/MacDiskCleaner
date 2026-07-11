@@ -13,7 +13,6 @@ Follow the steps below to install and use the application.
 2. **Open the Application**
 
    Double-click on MacDiskCleaner to open it. If you see a warning stating that "Apple cannot verify the application," proceed to the next step.
-   
    <img width="265" height="254" alt="Screenshot 2026-07-11 at 8 39 07 PM" src="https://github.com/user-attachments/assets/42f5c51e-9b16-4073-b532-755c1cdf629e" />
 
 3. **Allow the Application in Privacy & Security**
@@ -26,7 +25,7 @@ Follow the steps below to install and use the application.
 4. **Confirm the Security Prompt**
 
    A new dialog will appear asking you to confirm the action. Click **Open Anyway**.
-<img width="280" height="354" alt="Screenshot 2026-07-11 at 8 40 24 PM" src="https://github.com/user-attachments/assets/01851d28-ec79-4b1e-8543-f2489405c9d4" />
+   <img width="280" height="354" alt="Screenshot 2026-07-11 at 8 40 24 PM" src="https://github.com/user-attachments/assets/01851d28-ec79-4b1e-8543-f2489405c9d4" />
 
 5. **Enter Administrator Credentials**
 
