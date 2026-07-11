@@ -8,7 +8,7 @@ Follow the steps below to install and use the application.
 1. **Download and Locate the Application**
 
    After downloading the MacDiskCleaner application, navigate to the Applications folder in Finder and locate MacDiskCleaner.
-<img width="687" height="420" alt="Screenshot 2026-07-11 at 8 38 09 PM" src="https://github.com/user-attachments/assets/85869c39-bb57-4132-ae48-88d20cff8d98" />
+   <img width="687" height="420" alt="Screenshot 2026-07-11 at 8 38 09 PM" src="https://github.com/user-attachments/assets/85869c39-bb57-4132-ae48-88d20cff8d98" />
 
 2. **Open the Application**
 
