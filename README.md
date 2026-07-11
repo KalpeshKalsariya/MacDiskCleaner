@@ -8,22 +8,22 @@ MacDiskCleaner lives in your menu bar (shown as "MDC"). Click the icon to open a
 | Option | Shortcut | Description |
 |---|---|---|
 | Available Storage | - | Shows available disk space on your Mac, automatically updates every 30 seconds. |
-| Clean Derived Data | ⇧⌘C | Deletes Xcode's DerivedData folder to free up space and resolve build issues. |
-| Clear Xcode Caches | ⇧⌘X | Removes cached data related to Xcode projects. |
-| Clear Archives | ⇧⌘A | Deletes old archived builds from Xcode to save storage. |
-| Clear iOS Device Support | ⇧⌘I | Removes unnecessary iOS device support files. |
-| Clear watchOS Device Support | ⇧⌘W | Deletes outdated watchOS device support files. |
-| Clear tvOS Device Support | ⇧⌘T | Removes old tvOS device support files. |
-| Remove Old Simulators | ⇧⌘R | Deletes simulator devices whose runtime is no longer installed. |
+| Derived Data | ⇧⌘C | Deletes Xcode's DerivedData folder to free up space and resolve build issues. |
+| Xcode Caches | ⇧⌘X | Removes cached data related to Xcode projects. |
+| Archives | ⇧⌘A | Deletes old archived builds from Xcode to save storage. |
+| iOS Device Support | ⇧⌘I | Removes unnecessary iOS device support files. |
+| watchOS Device Support | ⇧⌘W | Deletes outdated watchOS device support files. |
+| tvOS Device Support | ⇧⌘T | Removes old tvOS device support files. |
+| Old Simulators | ⇧⌘R | Deletes simulator devices whose runtime is no longer installed. |
 | Simulator Previews | ⇧⌘O | Deletes cached simulator preview thumbnails. |
 | Simulators Data | ⇧⌘L | Erases all content and settings on every simulator device, keeping the devices themselves. |
-| Clear Caches | ⇧⌘S | Clears general system cache files to optimize performance. |
-| Clear CocoaPods Cache | ⇧⌘P | Deletes cached dependencies from CocoaPods to reclaim space. |
+| System Caches | ⇧⌘S | Clears general system cache files to optimize performance. |
+| CocoaPods Cache | ⇧⌘P | Deletes cached dependencies from CocoaPods to reclaim space. |
 | Empty Trash | ⇧⌘D | Empties the system trash (and iCloud Trash) to free up storage. |
-| Clear All | ⇧⌘E | Runs all cleaning operations at once for a full cleanup. |
+| Clean All | ⇧⌘E | Runs all cleaning operations at once for a full cleanup. |
 | Quit | ⌘Q | Exits the application and removes the menu bar icon. |
 
-Every destructive action (single task or "Clear All") shows a confirmation alert first, explaining what will be removed.
+Every destructive action (single task or "Clean All") shows a confirmation alert first, explaining what will be removed.
 
 ### Permissions
 
