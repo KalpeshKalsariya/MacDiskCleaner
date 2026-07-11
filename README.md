@@ -13,6 +13,7 @@ Follow the steps below to install and use the application.
 2. **Open the Application**
 
    Double-click on MacDiskCleaner to open it. If you see a warning stating that "Apple cannot verify the application," proceed to the next step.
+   
    <img width="265" height="254" alt="Screenshot 2026-07-11 at 8 39 07 PM" src="https://github.com/user-attachments/assets/42f5c51e-9b16-4073-b532-755c1cdf629e" />
 
 3. **Allow the Application in Privacy & Security**
@@ -73,41 +74,7 @@ Every destructive action (single task or "Clean All") shows a confirmation alert
 ## Requirements
 
 - macOS 14.6+
-- Xcode 16+ (Swift 6 language mode)
-
-## 📦 Installation Guide
-
-Follow the steps below to install and use the application.
-
-1. **Download and Locate the Application**
-
-   After downloading the MacDiskCleaner application, navigate to the Applications folder in Finder and locate MacDiskCleaner.
-
-2. **Open the Application**
-
-   Double-click on MacDiskCleaner to open it. If you see a warning stating that "Apple cannot verify the application," proceed to the next step.
-
-3. **Allow the Application in Privacy & Security**
-
-   Go to **System Settings > Privacy & Security**.
-   Scroll down to the **Security** section.
-   Click **Open Anyway** to allow the application to run.
-
-4. **Confirm the Security Prompt**
-
-   A new dialog will appear asking you to confirm the action. Click **Open Anyway**.
-
-5. **Enter Administrator Credentials**
-
-   To finalize the process, enter your administrator username and password, then click **OK**.
-
-6. **Grant Full Disk Access**
-
-   MacDiskCleaner needs Full Disk Access to reliably scan and clean most folders (especially system caches and some Trash locations). If it isn't granted yet, the app's menu bar popover shows a banner with a button that opens this screen directly, or you can get there manually:
-
-   - Go to **System Settings > Privacy & Security > Full Disk Access**.
-   - Find **MacDiskCleaner** in the list of applications.
-   - Toggle it **on**.
+- Xcode 16+
 
 ## Built With
 
