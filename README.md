@@ -13,6 +13,7 @@ Follow the steps below to install and use the application.
 2. **Open the Application**
 
    Double-click on MacDiskCleaner to open it. If you see a warning stating that "Apple cannot verify the application," proceed to the next step.
+   
    <img width="265" height="254" alt="Screenshot 2026-07-11 at 8 39 07 PM" src="https://github.com/user-attachments/assets/42f5c51e-9b16-4073-b532-755c1cdf629e" />
 
 3. **Allow the Application in Privacy & Security**
@@ -39,6 +40,7 @@ Follow the steps below to install and use the application.
    - Go to **System Settings > Privacy & Security > Full Disk Access**.
    - Find **MacDiskCleaner** in the list of applications.
    - Toggle it **on**.
+   
    <img width="748" height="708" alt="Screenshot 2026-07-11 at 8 42 47 PM" src="https://github.com/user-attachments/assets/565d6b7b-a1e0-4c59-be6d-68c4b879fc91" />
    
 ## What it does
