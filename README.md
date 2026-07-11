@@ -60,6 +60,14 @@ Follow the steps below to install and use the application.
 
    To finalize the process, enter your administrator username and password, then click **OK**.
 
+6. **Grant Full Disk Access**
+
+   MacDiskCleaner needs Full Disk Access to reliably scan and clean most folders (especially system caches and some Trash locations). If it isn't granted yet, the app's menu bar popover shows a banner with a button that opens this screen directly, or you can get there manually:
+
+   - Go to **System Settings > Privacy & Security > Full Disk Access**.
+   - Find **MacDiskCleaner** in the list of applications.
+   - Toggle it **on**.
+
 ## Built With
 
 - **Swift 6** — strict concurrency checking throughout
