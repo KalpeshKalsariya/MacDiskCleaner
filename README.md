@@ -54,7 +54,5 @@ For questions or feature requests, reach out at kalsariyakalpesh993@gmail.com or
 
 ## Author
 
-Kalpesh Kalsariya — github.com/KalpeshKalsariya
-
-## ☕ Support Me
+Kalpesh Kalsariya — [github.com/KalpeshKalsariya](https://github.com/KalpeshKalsariya)
 
