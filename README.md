@@ -1,7 +1,7 @@
 # MacDiskCleaner
 Keep your Mac clean, organized, and running smoothly with an intelligent storage cleanup tool built for speed, safety, and privacy.
 
-## 📦 Installation Guide
+## Installation Guide
 
 Follow the steps below to install and use the application.
 
