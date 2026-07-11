@@ -1,6 +1,6 @@
 import Foundation
 
-enum SimulatorManager {
+nonisolated enum SimulatorManager {
     struct SimctlError: LocalizedError {
         let output: String
         var errorDescription: String? { "simctl failed: \(output)" }
@@ -11,6 +11,17 @@ enum SimulatorManager {
     /// since it keeps CoreSimulator's own device registry consistent.
     static func deleteUnavailableSimulators() throws {
         try run(["simctl", "delete", "unavailable"])
+    }
+
+    /// Deletes cached Simulator screenshot/preview thumbnails for every runtime.
+    static func deleteAllPreviews() throws {
+        try run(["simctl", "--set", "previews", "delete", "all"])
+    }
+
+    /// Erases all content and settings on every simulator device, restoring them to
+    /// a factory-fresh state without deleting the devices themselves.
+    static func eraseAllSimulatorsData() throws {
+        try run(["simctl", "erase", "all"])
     }
 
     @discardableResult

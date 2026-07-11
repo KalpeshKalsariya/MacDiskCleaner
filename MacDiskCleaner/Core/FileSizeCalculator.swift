@@ -2,7 +2,7 @@ import Foundation
 
 /// `bytes` alone can't distinguish "genuinely empty" from "TCC denied us access" (e.g. ~/.Trash
 /// without Full Disk Access) — both read as 0. `isAccessRestricted` carries that distinction.
-struct FileSizeResult {
+nonisolated struct FileSizeResult {
     let bytes: Int64
     let isAccessRestricted: Bool
 
@@ -13,7 +13,7 @@ struct FileSizeResult {
     }
 }
 
-enum FileSizeCalculator {
+nonisolated enum FileSizeCalculator {
     /// Filesystem-generated metadata files that never represent real user content,
     /// regardless of which folder they turn up in.
     private static let ignoredFileNames: Set<String> = [".DS_Store", ".localized"]

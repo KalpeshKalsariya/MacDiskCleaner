@@ -27,6 +27,10 @@ enum CleanupConfirmationTarget: Identifiable {
                 return "This removes cached data for every app on your Mac. Most apps rebuild their caches automatically, but some may need to relaunch or resync."
             case .trash:
                 return "This permanently empties the Trash. Files cannot be recovered afterward."
+            case .simulatorsData:
+                return "This erases all content and settings on every simulator device, restoring them to a factory-fresh state. The devices themselves are kept."
+            case .simulatorPreviews:
+                return "This removes cached preview thumbnails for every simulator runtime. They'll be regenerated automatically as needed."
             default:
                 return "This action cannot be undone."
             }
@@ -73,12 +77,6 @@ final class MenuViewModel: ObservableObject {
 
     var isCleaningAll: Bool {
         taskStates.contains { $0.isCleaning }
-    }
-
-    var overallCleanProgress: Double {
-        let cleaning = taskStates.filter { $0.isCleaning }
-        guard !cleaning.isEmpty else { return 0 }
-        return cleaning.reduce(0) { $0 + $1.cleanProgress } / Double(cleaning.count)
     }
 
     func scanAll() {
@@ -177,15 +175,15 @@ final class MenuViewModel: ObservableObject {
     }
 
     private func startAutoRefresh() {
-        refreshTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in
-            Task { @MainActor in
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { _ in
+            Task { @MainActor [weak self] in
                 self?.refreshAvailableCapacity()
             }
         }
         // Keeps sizes reasonably current without redoing a full disk scan every time the
         // popover opens — the manual refresh button in the header still covers "I want it now."
-        rescanTimer = Timer.scheduledTimer(withTimeInterval: 300, repeats: true) { [weak self] _ in
-            Task { @MainActor in
+        rescanTimer = Timer.scheduledTimer(withTimeInterval: 300, repeats: true) { _ in
+            Task { @MainActor [weak self] in
                 self?.scanAll()
             }
         }

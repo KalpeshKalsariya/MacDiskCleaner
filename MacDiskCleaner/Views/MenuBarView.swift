@@ -119,9 +119,9 @@ private struct CleanAllRow: View {
                     .font(.body)
                     .foregroundStyle(.primary)
                 if viewModel.isCleaningAll {
-                    ProgressView(value: viewModel.overallCleanProgress)
-                        .progressViewStyle(.linear)
-                        .frame(maxWidth: 140)
+                    Text("Cleaning…")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 } else {
                     Text(ByteCountFormatter.string(fromByteCount: viewModel.totalCleanableBytes, countStyle: .file))
                         .font(.caption)
@@ -155,9 +155,9 @@ private struct CleanupRow: View {
                     .font(.body)
                     .foregroundStyle(.primary)
                 if state.isCleaning {
-                    ProgressView(value: state.cleanProgress)
-                        .progressViewStyle(.linear)
-                        .frame(maxWidth: 140)
+                    Text("Cleaning…")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 } else if state.isCalculating {
                     Text("Calculating…")
                         .font(.caption)

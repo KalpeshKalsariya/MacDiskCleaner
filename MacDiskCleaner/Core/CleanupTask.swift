@@ -1,6 +1,6 @@
 import Foundation
 
-enum CleanupTaskKind: String, CaseIterable, Identifiable {
+nonisolated enum CleanupTaskKind: String, CaseIterable, Identifiable {
     case derivedData
     case xcodeCaches
     case archives
@@ -8,6 +8,8 @@ enum CleanupTaskKind: String, CaseIterable, Identifiable {
     case watchosDeviceSupport
     case tvosDeviceSupport
     case simulators
+    case simulatorPreviews
+    case simulatorsData
     case systemCaches
     case cocoapodsCache
     case trash
@@ -23,6 +25,8 @@ enum CleanupTaskKind: String, CaseIterable, Identifiable {
         case .watchosDeviceSupport: return "watchOS Device Support"
         case .tvosDeviceSupport: return "tvOS Device Support"
         case .simulators: return "Old Simulators"
+        case .simulatorPreviews: return "Simulator Previews"
+        case .simulatorsData: return "Simulators Data"
         case .systemCaches: return "System Caches"
         case .cocoapodsCache: return "CocoaPods Cache"
         case .trash: return "Empty Trash"
@@ -40,6 +44,8 @@ enum CleanupTaskKind: String, CaseIterable, Identifiable {
         case .watchosDeviceSupport: return "w"
         case .tvosDeviceSupport: return "t"
         case .simulators: return "r"
+        case .simulatorPreviews: return "o"
+        case .simulatorsData: return "l"
         case .systemCaches: return "s"
         case .cocoapodsCache: return "p"
         case .trash: return "d"

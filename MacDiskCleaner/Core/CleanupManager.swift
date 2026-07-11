@@ -11,7 +11,7 @@ struct CleanupError: LocalizedError {
     }
 }
 
-enum CleanupManager {
+nonisolated enum CleanupManager {
     static func calculateSize(for kind: CleanupTaskKind) async -> FileSizeResult {
         await Task.detached(priority: .utility) {
             switch kind {
@@ -22,6 +22,10 @@ enum CleanupManager {
                     of: PathProvider.systemCaches,
                     excludingTopLevelNames: PathProvider.systemCachesExcludeList
                 )
+            case .trash:
+                // Goes through Finder rather than FileManager — Finder already owns the
+                // Trash, so this avoids depending on Full Disk Access being granted.
+                return FinderTrashService.size()
             default:
                 return kind.paths.reduce(FileSizeResult.zero) { $0 + FileSizeCalculator.size(of: $1) }
             }
@@ -34,12 +38,21 @@ enum CleanupManager {
             case .simulators:
                 try SimulatorManager.deleteUnavailableSimulators()
                 progress(1)
+            case .simulatorPreviews:
+                try SimulatorManager.deleteAllPreviews()
+                progress(1)
+            case .simulatorsData:
+                try SimulatorManager.eraseAllSimulatorsData()
+                progress(1)
             case .systemCaches:
                 try removeContents(
                     of: [PathProvider.systemCaches],
                     excluding: PathProvider.systemCachesExcludeList,
                     progress: progress
                 )
+            case .trash:
+                try FinderTrashService.empty()
+                progress(1)
             default:
                 try removeContents(of: kind.paths, progress: progress)
             }

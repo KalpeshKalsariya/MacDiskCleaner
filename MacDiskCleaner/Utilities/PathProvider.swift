@@ -1,6 +1,6 @@
 import Foundation
 
-enum PathProvider {
+nonisolated enum PathProvider {
     static var home: URL {
         FileManager.default.homeDirectoryForCurrentUser
     }
@@ -77,6 +77,8 @@ enum PathProvider {
         case .watchosDeviceSupport: return [watchosDeviceSupport]
         case .tvosDeviceSupport: return [tvosDeviceSupport]
         case .simulators: return [simulatorDevices]
+        case .simulatorPreviews: return [simulatorDevices]
+        case .simulatorsData: return [simulatorDevices]
         case .systemCaches: return [systemCaches]
         case .cocoapodsCache: return [cocoapodsCaches, cocoapodsRepos]
         case .trash: return [trash, iCloudTrash]
